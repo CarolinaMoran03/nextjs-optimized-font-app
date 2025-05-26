@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Planificación Educativa</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 2cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-section h2 {
+            color: #34495e;
+            font-size: 18px;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        .info-row {
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        .content-section {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f5f6fa;
+            color: #2c3e50;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Planificación Educativa</h1>
+        <p>Generado el: {{ planning.created_at|date:"d/m/Y H:i" }}</p>
+    </div>
+
+    <div class="info-section">
+        <h2>Información General</h2>
+        <div class="info-row">
+            <span class="info-label">Docente:</span>
+            {{ planning.created_by.get_full_name|default:planning.created_by.username }}
+        </div>
+        <div class="info-row">
+            <span class="info-label">Tipo de Planificación:</span>
+            {{ planning.get_planning_type_display }}
+        </div>
+        <div class="info-row">
+            <span class="info-label">Curso:</span>
+            {{ planning.course }}
+        </div>
+        <div class="info-row">
+            <span class="info-label">Materias:</span>
+            {% for subject in subjects %}
+            {{ subject }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+        <div class="info-row">
+            <span class="info-label">Período:</span>
+            Del {{ planning.start_date|date:"d/m/Y" }} al {{ planning.end_date|date:"d/m/Y" }}
+        </div>
+        <div class="info-row">
+            <span class="info-label">Número de Unidades:</span>
+            {{ planning.number_units }}
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2>Planificación por Unidades</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Unidad</th>
+                    <th>Objetivos</th>
+                    <th>Contenidos</th>
+                    <th>Actividades</th>
+                    <th>Evaluación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in planning.number_units|times %}
+                <tr>
+                    <td>Unidad {{ forloop.counter }}</td>
+                    <td>[Objetivos generados por IA]</td>
+                    <td>[Contenidos generados por IA]</td>
+                    <td>[Actividades generadas por IA]</td>
+                    <td>[Criterios de evaluación generados por IA]</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Este documento fue generado automáticamente por el sistema de planificación educativa.</p>
+        <p>© {{ planning.created_at|date:"Y" }} - Todos los derechos reservados</p>
+    </div>
+</body>
+</html>
